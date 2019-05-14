@@ -2,7 +2,7 @@
 #
 # S E T U P
 #     chmod +x /omd/agent_springboot.sh
-#     ln /omd/agent_springboot.sh /omd/versions/default/share/check_mk/agents/special/agent_springboot
+#     ln -s /omd/agent_springboot.sh /omd/versions/default/share/check_mk/agents/special/agent_springboot
 #
 # P A R A M E T E R S
 #     $1 | Hostanme
