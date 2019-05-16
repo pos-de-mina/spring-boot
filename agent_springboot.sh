@@ -37,8 +37,7 @@ else
 	then
 		STATUS=0
 	fi
-	echo $STATUS
-
+	
 	echo -e "$STATUS\tSpring Boot Health\tHTTP_STATUS=$HTTP_CODE|HTTP_TIME=${HTTP_TIME}s|HTTP_SIZE=${HTTP_SIZE}B\tHTTP status $HTTP_CODE, HTTP response time $HTTP_TIME, HTTP size $HTTP_SIZE"
 fi
 
