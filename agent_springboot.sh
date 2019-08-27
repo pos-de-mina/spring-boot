@@ -15,13 +15,26 @@ echo "Version: 1.0"
 echo "AgentOS: Spring Boot"
 echo "<<<local:sep(9)>>>"
 
-curl -s --insecure --connect-timeout 5 https://$1/actuator/prometheus | awk '/^[^#]/ { value=$NF; gsub($NF,"",$0); print "0\tSpring Boot "$0"\tvalue="value"\t-" }'
+# ------------------
+# Spring Boot Performance
+
+curl https://$1/actuator/prometheus --connect-timeout 5 --insecure --silent -o /tmp/spring-boot-$$-body.txt --write-out "HTTP_CODE=%{http_code}\nHTTP_TIME=%{time_total}\nHTTP_SIZE=%{size_download}\n" &> /tmp/spring-boot-$$-stderr.txt
+#curl -s --insecure --connect-timeout 5 https://$1/actuator/prometheus | awk '/^[^#]/ { value=$NF; gsub($NF,"",$0); print "0\tSpring Boot "$0"\tvalue="value"\t-" }'
+
+HTTP_ERROR=$?
+
+if [ $HTTP_ERROR ]
+then
+	source /tmp/spring-boot-$$-stderr.txt
+
+	awk '/^[^#]/ { value=$NF; gsub($NF,"",$0); print "0\tSpring Boot "$0"\tvalue="value"\t-" }' /tmp/spring-boot-$$-body.txt
+fi
 
 
 # ------------------
 # Spring Boot Health
 
-curl https://$1/actuator/health  --connect-timeout 5 --insecure --silent -o /tmp/spring-boot-$$-body.txt --write-out "HTTP_CODE=%{http_code}\nHTTP_TIME=%{time_total}\nHTTP_SIZE=%{size_download}\n" &> /tmp/spring-boot-$$-stderr.txt
+curl https://$1/actuator/health --connect-timeout 5 --insecure --silent -o /tmp/spring-boot-$$-body.txt --write-out "HTTP_CODE=%{http_code}\nHTTP_TIME=%{time_total}\nHTTP_SIZE=%{size_download}\n" &> /tmp/spring-boot-$$-stderr.txt
 
 HTTP_ERROR=$?
 
