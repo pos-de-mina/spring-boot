@@ -23,7 +23,7 @@ curl https://$1/actuator/prometheus --connect-timeout 5 --insecure --silent -o /
 
 HTTP_ERROR=$?
 
-if [ $HTTP_ERROR ]
+if [ $HTTP_ERROR -eq 0 ]
 then
 	source /tmp/spring-boot-$$-stderr.txt
 
